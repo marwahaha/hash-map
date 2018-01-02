@@ -5,14 +5,15 @@
 
 #include "../log/log.h"
 
-#include "hash.h"
+#include "key.h"
+#include "value.h"
 #include "kv.h"
 
-static void _validate_kv(kv* x) {
+static void _validate(kv* x) {
     Assert(x != NULL, __func__, "kv cannot be null");
     Assert(x->k != NULL, __func__, "k cannot be null");
     Assert(x->v != NULL, __func__, "v cannot be null");
-    Assert(x->k_len > 0 && x->v_len > 0, __func__, "length must be positive");
+    Assert(key_l(x->k) > 0 && value_l(x->v) > 0, __func__, "length must be positive");
 }
 
 // return true if k or v too big, false otherwise
@@ -23,51 +24,41 @@ static bool _validate_max(const unsigned short k_len, const unsigned short v_len
 }
 
 bool kv_compare(kv* kv0, kv* kv1) {
-    _validate_kv(kv0);
-    _validate_kv(kv1);
-    // this is an impl, so can use struct w/o getters
-    if (kv0->h != kv1->h) return false;
-    else if (kv0->k_len != kv1->k_len) return false;
-    else if (kv0->v_len != kv1->v_len) return false;
-    else if (bcmp(kv0->k, kv1->k, kv0->k_len)) return false;
-    else if (bcmp(kv0->v, kv1->v, kv0->v_len)) return false;
-    else return true;
+    key* k0 = kv_key(kv0);
+    key* k1 = kv_key(kv1);
+    value* v0 = kv_value(kv0);
+    value* v1 = kv_value(kv1);
+    if (key_compare(k0, k1)) {
+        if (value_compare(v0, v1)) {
+            return true;
+        }
+    }
+    return false;
 }
 
-kv* kv_new(unsigned char* k, unsigned short k_len, unsigned char* v, unsigned short v_len) {
+kv* kv_new(key* k, value* v) {
     Assert(k != NULL && v != NULL, __func__, "key and value must be passed");
-    if (_validate_max(k_len, v_len)) return NULL;
+    if (_validate_max(key_l(k), value_l(v))) return NULL;
     kv* x = malloc(sizeof(kv));
     Assert(x != NULL, __func__, "malloc error");
     x->k = k;
     x->v = v;
-    x->k_len = k_len;
-    x->v_len = v_len;
-    x->h = hash(k, k_len);
     return x;
 }
 
-unsigned int kv_h(kv* x) {
-    _validate_kv(x);
-    return x->h;
+kv* kv_new_raw(unsigned char* kb, unsigned short k_len, unsigned char* vb, unsigned short v_len) {
+    Assert(kb != NULL && vb != NULL, __func__, "key and value must be passed");
+    key* k = key_new(kb, k_len);
+    value* v = value_new(vb, v_len);
+    return kv_new(k, v);
 }
 
-unsigned char* kv_k(kv* x) {
-    _validate_kv(x);
+key* kv_key(kv* x) {
+    _validate(x);
     return x->k;
 }
 
-unsigned char* kv_v(kv* x) {
-    _validate_kv(x);
+value* kv_value(kv* x) {
+    _validate(x);
     return x->v;
-}
-
-unsigned short kv_k_len(kv* x) {
-    _validate_kv(x);
-    return x->k_len;
-}
-
-unsigned short kv_v_len(kv* x) {
-    _validate_kv(x);
-    return x->v_len;
 }

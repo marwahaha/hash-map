@@ -17,8 +17,8 @@ test-key: test-key.c key.c hash.c
 test-value: test-value.c value.c
 	$(CC) -o test-value test-value.c value.c $(DEPS) $(CFLAGS)
 
-test-kv: test-kv.c kv.c hash.c $(DEPS)
-	$(CC) -o test-kv test-kv.c kv.c hash.c $(DEPS) $(CFLAGS)
+test-kv: test-kv.c kv.c key.c hash.c value.c $(DEPS)
+	$(CC) -o test-kv test-kv.c kv.c key.c hash.c value.c $(DEPS) $(CFLAGS)
 
 test: test.c $(DEPS)
 	$(CC) -o test test.c hash-map.c $(DEPS) $(CFLAGS)
