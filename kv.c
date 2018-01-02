@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <strings.h> // bcmp
 
 #include "../log/log.h"
 
@@ -19,6 +20,18 @@ static bool _validate_max(const unsigned short k_len, const unsigned short v_len
     Assert(k_len > 0 && v_len > 0, __func__, "length must be positive");
     if (k_len > _MAX_K_LEN || v_len > _MAX_V_LEN) return true;
     return false;
+}
+
+bool kv_compare(kv* kv0, kv* kv1) {
+    _validate_kv(kv0);
+    _validate_kv(kv1);
+    // this is an impl, so can use struct w/o getters
+    if (kv0->h != kv1->h) return false;
+    else if (kv0->k_len != kv1->k_len) return false;
+    else if (kv0->v_len != kv1->v_len) return false;
+    else if (bcmp(kv0->k, kv1->k, kv0->k_len)) return false;
+    else if (bcmp(kv0->v, kv1->v, kv0->v_len)) return false;
+    else return true;
 }
 
 kv* kv_new(unsigned char* k, unsigned short k_len, unsigned char* v, unsigned short v_len) {

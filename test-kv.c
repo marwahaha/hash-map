@@ -3,9 +3,42 @@
 
 #include "kv.h"
 
-int main() {
-    const unsigned int k_len = 4;
-    const unsigned int v_len = 16;
+kv* create_kv0() {
+    const unsigned short k_len = 4;
+    const unsigned short v_len = 16;
+    char kb[k_len] = "abcd";
+    char vb[v_len] = "abcdefghijklmnop";
+    unsigned char* k = (unsigned char*) &kb;
+    unsigned char* v = (unsigned char*) &vb;
+
+    return kv_new(k, k_len, v, v_len);
+}
+
+kv* create_kv1() {
+    const unsigned short k_len = 4;
+    const unsigned short v_len = 16;
+    char kb[k_len] = "abcd";
+    char vb[v_len] = "abcdefghijklmnop";
+    unsigned char* k = (unsigned char*) &kb;
+    unsigned char* v = (unsigned char*) &vb;
+
+    return kv_new(k, k_len, v, v_len);
+}
+
+kv* create_kv2() {
+    const unsigned short k_len = 5;
+    const unsigned short v_len = 17;
+    char kb[k_len] = "abcde";
+    char vb[v_len] = "abcdefghijklmnopq";
+    unsigned char* k = (unsigned char*) &kb;
+    unsigned char* v = (unsigned char*) &vb;
+
+    return kv_new(k, k_len, v, v_len);
+}
+
+void test_new() {
+    const unsigned short k_len = 4;
+    const unsigned short v_len = 16;
     char kb[k_len] = "abcd";
     char vb[v_len] = "abcdefghijklmnop";
     unsigned char* k = (unsigned char*) &kb;
@@ -25,6 +58,18 @@ int main() {
     char vbt[v_len];
     memcpy(&vbt, vt, v_len);
     assert(bcmp(&vbt, &vb, v_len) == 0);
+}
 
+void test_compare() {
+    kv* kv0 = create_kv0();
+    kv* kv1 = create_kv1();
+    assert(kv_compare(kv0, kv1));
+    kv* kv2 = create_kv2();
+    assert(!kv_compare(kv0, kv2));
+}
+
+int main() {
+    test_new();
+    test_compare();
     return 0;
 }

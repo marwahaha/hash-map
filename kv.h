@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #ifndef KV_H
 #define KV_H
 
@@ -19,6 +21,11 @@ const static unsigned short _MAX_V_LEN = 1024;
     note that caller must validate k and v pointers are malloc()'d
 */
 kv* kv_new(unsigned char* k, unsigned short k_len, unsigned char* v, unsigned short v_len);
+
+/*
+    compare two kv (by value)
+*/
+bool kv_compare(kv* kv0, kv* kv1);
 
 /*
     getter functions
