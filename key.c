@@ -1,4 +1,6 @@
+#include <stdbool.h>
 #include <stdlib.h>
+#include <strings.h> //bcmp
 
 #include "../log/log.h"
 
@@ -10,6 +12,15 @@ static void _validate(key* key) {
     Assert(key->l > 0, __func__, "length > 0");
     Assert(key->h > 0, __func__, "hash > 0");
     Assert(key->k != NULL, __func__, "key buffer cannot be null");
+}
+
+bool key_compare(key* k0, key* k1) {
+    _validate(k0);
+    _validate(k1);
+    if (k0->h != k1->h) return false;
+    else if (k0->l != k1->l) return false;
+    else if (bcmp(k0->k, k1->k, k0->l)) return false;
+    else return true;
 }
 
 key* key_new(unsigned char* kb, unsigned short l) {

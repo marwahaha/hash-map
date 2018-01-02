@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #ifndef KEY_H
 #define KEY_H
 
@@ -12,6 +14,11 @@ struct key {
     create a new key
 */
 key* key_new(unsigned char* k, unsigned short l);
+
+/*
+    compares two keys
+*/
+bool key_compare(key* k0, key* k1);
 
 /*
     getters
