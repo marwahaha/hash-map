@@ -3,6 +3,8 @@
 #ifndef KEY_H
 #define KEY_H
 
+const static unsigned short _MAX_K_LEN = 128;
+
 typedef struct key key;
 struct key {
     unsigned char* k;

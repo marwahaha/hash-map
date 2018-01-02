@@ -7,6 +7,10 @@
 #include "hash.h"
 #include "key.h"
 
+static void _length(unsigned short l) {
+    Assert(l < _MAX_K_LEN, __func__, "key length too large: %hd", l);
+}
+
 static void _validate(key* key) {
     Assert(key != NULL, __func__, "key cannot be null");
     Assert(key->l > 0, __func__, "length > 0");
@@ -24,11 +28,13 @@ bool key_compare(key* k0, key* k1) {
 }
 
 key* key_new(unsigned char* kb, unsigned short l) {
+    _length(l);
     key* key = malloc(sizeof(key));
     Assert(key != NULL, __func__, "malloc error");
     key->k = kb;
     key->l = l;
     key->h = hash(kb, l);
+    _validate(key);
     return key;
 }
 

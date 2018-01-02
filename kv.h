@@ -12,9 +12,6 @@ struct kv {
     value* v;
 };
 
-const static unsigned short _MAX_K_LEN = 128;
-const static unsigned short _MAX_V_LEN = 1024;
-
 /*
     create a new key value pair
     returns null if key or value too long

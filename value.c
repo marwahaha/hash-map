@@ -6,6 +6,10 @@
 
 #include "value.h"
 
+static void _length(unsigned short l) {
+    Assert(l < _MAX_V_LEN, __func__, "key length too large: %hd", l);
+}
+
 static void _validate(value* value) {
     Assert(value != NULL, __func__, "value cannot be null");
     Assert(value->l > 0, __func__, "length > 0");
@@ -21,6 +25,7 @@ bool value_compare(value* v0, value* v1) {
 }
 
 value* value_new(unsigned char* vb, unsigned short l) {
+    _length(l);
     value* value = malloc(sizeof(value));
     Assert(value != NULL, __func__, "malloc error");
     value->v = vb;

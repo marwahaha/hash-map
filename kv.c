@@ -38,7 +38,6 @@ bool kv_compare(kv* kv0, kv* kv1) {
 
 kv* kv_new(key* k, value* v) {
     Assert(k != NULL && v != NULL, __func__, "key and value must be passed");
-    if (_validate_max(key_l(k), value_l(v))) return NULL;
     kv* x = malloc(sizeof(kv));
     Assert(x != NULL, __func__, "malloc error");
     x->k = k;

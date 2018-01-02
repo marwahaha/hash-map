@@ -3,6 +3,8 @@
 #ifndef VALUE_H
 #define VALUE_H
 
+const static unsigned short _MAX_V_LEN = 1024;
+
 typedef struct value value;
 struct value {
     unsigned short l;
