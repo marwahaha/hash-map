@@ -6,13 +6,13 @@
 #include "node.h"
 #include "key.h"
 #include "kv.h"
-#include "value.h"
 
 static void _validate(list* l) {
     Assert(l != NULL, __func__, "list cannot be null");
 }
 
 static void _add(list* l, kv* kv) {
+    Assert(kv != NULL, __func__, "kv cannot be null");
     node* n = node_new(kv);
     l->h = n;
 }
