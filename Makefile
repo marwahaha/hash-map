@@ -1,8 +1,7 @@
 CC=`brew --prefix llvm`/bin/clang
 CFLAGS=-I. -g
 DEPS=../log/log.c
-#BIN=test-hash test-key test-value test-kv test-list test
-BIN=test-hash test-key test-value test-kv test-list
+BIN=test-hash test-value test-key test-kv test-list test
 
 all: $(BIN)
 
@@ -24,5 +23,5 @@ test-kv: test-kv.c kv.c key.c hash.c value.c $(DEPS)
 test-list: test-list.c list.c node.c kv.c key.c hash.c value.c $(DEPS)
 	$(CC) -o test-list test-list.c list.c node.c kv.c key.c hash.c value.c $(DEPS) $(CFLAGS)
 
-test: test.c $(DEPS)
-	$(CC) -o test test.c hash-map.c $(DEPS) $(CFLAGS)
+test: test.c hashmap.c list.c node.c kv.c key.c hash.c value.c $(DEPS)
+	$(CC) -o test test.c hashmap.c list.c node.c kv.c key.c hash.c value.c $(DEPS) $(CFLAGS)

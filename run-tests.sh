@@ -7,4 +7,5 @@ make all
     ./test-key && \
     ./test-kv && \
     ./test-list && \
+    ./test && \
     echo 'ok'
