@@ -89,3 +89,14 @@ kv* list_del(list* l, key* k) {
 kv* list_get(list* l, key* k) {
     return _find(l, k, false/*del*/);
 }
+
+unsigned short _list_count(list* l) {
+    _validate(l);
+    unsigned short c = 0;
+    node* n = l->h;
+    while (n != NULL) {
+        c++;
+        n = n->n;
+    }
+    return c;
+}

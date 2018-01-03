@@ -13,17 +13,17 @@ struct hashmap {
     unsigned short c;
 };
 
-/*
-    create a new hashmap using default bucket count
-*/
+// create a new hashmap w/ default bucket count
 hashmap* hashmap_new();
 // using custom bucket count
 hashmap* hashmap_new_cb(unsigned short count);
 
+// self-explanatory
 kv* hashmap_add(hashmap* h, kv* kv);
-
 kv* hashmap_del(hashmap* h, key* k);
-
 kv* hashmap_get(hashmap* h, key* k);
+
+// for unit test
+unsigned short _hashmap_count(hashmap* h);
 
 #endif //HASH_MAP_H

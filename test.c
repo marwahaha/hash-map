@@ -73,7 +73,7 @@ void test_internals() {
     kv* k0v0 = create_k0v0();
     kv* k0v0D = create_k0v0();
     assert(list_add(h->b[1], k0v0) == NULL);
-    assert(list_add(h->b[1], k0v0D) != NULL);
+    assert(kv_compare(list_add(h->b[1], k0v0D), k0v0));
     assert(kv_compare(list_get(h->b[1], k0), k0v0D));
 }
 
@@ -85,7 +85,9 @@ void test_simple() {
     assert(hashmap_add(h, k0v0) == NULL);
     kv* r = hashmap_add(h, k0v0D);
     assert(kv_compare(k0v0, r));
-    assert(hashmap_get(h, k0) != NULL);
+    assert(kv_compare(hashmap_get(h, k0), k0v0));
+    assert(kv_compare(hashmap_del(h, k0), k0v0));
+    assert(hashmap_get(h, k0) == NULL);
     // best-effort
     free(k0);
     free(k0v0);
@@ -93,8 +95,35 @@ void test_simple() {
     free(h);
 }
 
+void test_count() {
+    key* k0 = create_k0();
+    key* k1 = create_k1();
+    kv* k0v0 = create_k0v0();
+    kv* k1v1 = create_k1v1();
+    hashmap* h = hashmap_new();
+    assert(_hashmap_count(h) == 0);
+    hashmap_add(h, k0v0);
+    assert(_hashmap_count(h) == 1);
+    hashmap_add(h, k1v1);
+    assert(_hashmap_count(h) == 2);
+    hashmap_del(h, k0);
+    assert(_hashmap_count(h) == 1);
+    hashmap_del(h, k1);
+    assert(_hashmap_count(h) == 0);
+}
+
+/*
+    FIXME:
+        add functionality to create a bunch of keys
+        and values and then do random deletes and gets
+        to see if it errors
+
+        add keys smartly to test bucket spread (and check)
+*/
+
 int main() {
     test_internals();
     test_simple();
+    test_count();
     return 0;
 }

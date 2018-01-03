@@ -29,4 +29,9 @@ kv* list_del(list* l, key* k);
 */
 kv* list_get(list* l, key* k);
 
+/*
+    for unit testing support
+*/
+unsigned short _list_count(list* l);
+
 #endif //LIST_H

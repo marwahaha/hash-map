@@ -126,6 +126,23 @@ void test_get() {
     free(l);
 }
 
+void test_count() {
+    kv* k0v0 = create_k0v0();
+    kv* k0v1 = create_k0v1();
+    kv* k1v1 = create_k1v1();
+    list* l = list_new();
+    list_add(l, k0v0);
+    assert(_list_count(l) == 1);
+    list_add(l, k0v1);
+    assert(_list_count(l) == 1);
+    list_add(l, k1v1);
+    assert(_list_count(l) == 2);
+    free(k0v0);
+    free(k0v1);
+    free(k1v1);
+    free(l);
+}
+
 int main() {
     list* l = list_new();
     assert(l != NULL);
@@ -134,5 +151,6 @@ int main() {
     test_insert();
     test_delete();
     test_get();
+    test_count();
     return 0;
 }
