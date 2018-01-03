@@ -83,9 +83,9 @@ static kv* _find(list* l, key* k, bool del) {
 }
 
 kv* list_del(list* l, key* k) {
-    return _find(l, k, true);
+    return _find(l, k, true/*del*/);
 }
 
 kv* list_get(list* l, key* k) {
-    return _find(l, k, false);
+    return _find(l, k, false/*del*/);
 }
