@@ -62,7 +62,8 @@ kv* create_k1v1() {
 void test_duplicate() {
     kv* k0v0 = create_k0v0();
     kv* k0v0D = create_k0v0();
-    list* l = list_new(k0v0);
+    list* l = list_new();
+    assert(list_add(l, k0v0) == NULL);
     kv* r = list_add(l, k0v0D);
     assert(kv_compare(k0v0, r));
     assert(k0v0->k == r->k);
@@ -76,7 +77,8 @@ void test_duplicate() {
 void test_insert() {
     kv* k0v0 = create_k0v0();
     kv* k0v1 = create_k0v1();
-    list* l = list_new(k0v0);
+    list* l = list_new();
+    assert(list_add(l, k0v0) == NULL);
     kv* r = list_add(l, k0v1);
     assert(r != NULL);
     assert(kv_compare(k0v0, r));
@@ -91,7 +93,8 @@ void test_insert() {
 
 void test_delete() {
     kv* k0v0 = create_k0v0();
-    list* l = list_new(k0v0);
+    list* l = list_new();
+    assert(list_add(l, k0v0) == NULL);
 
     kv* k1v1 = create_k1v1();
     assert(list_add(l, k1v1) == NULL);
@@ -104,9 +107,32 @@ void test_delete() {
     free(l);
 }
 
+void test_get() {
+    kv* k0v0 = create_k0v0();
+    list* l = list_new();
+    assert(list_add(l, k0v0) == NULL);
+
+    kv* k1v1 = create_k1v1();
+    assert(list_add(l, k1v1) == NULL);
+    key* k0 = create_k0();
+    kv* r = list_get(l, k0);
+    assert(r != NULL);
+    assert(kv_compare(r, k0v0));
+    r = list_get(l, k0);
+    assert(r != NULL);
+    assert(kv_compare(r, k0v0));
+    free(k0v0);
+    free(k1v1);
+    free(l);
+}
+
 int main() {
+    list* l = list_new();
+    assert(l != NULL);
+    assert(l->h == NULL);
     test_duplicate();
     test_insert();
     test_delete();
+    test_get();
     return 0;
 }
