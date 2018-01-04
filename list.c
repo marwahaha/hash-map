@@ -78,6 +78,7 @@ static kv* _find(list* l, key* k, bool del) {
             if (del) _del(l, n, p);
             return kv;
         }
+        p = n;
         n = n->n;
     }
     return NULL;
