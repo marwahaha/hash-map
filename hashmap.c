@@ -46,6 +46,13 @@ kv* hashmap_get(hashmap* h, key* k) {
     return list_get(_bucket(h, k), k);
 }
 
+void _hashmap_free(hashmap* h) {
+    for (short i = 0; i < h->c; i++) {
+        free(h->b[i]);
+    }
+    free(h);
+}
+
 unsigned short _hashmap_count(hashmap* h) {
     _validate(h);
     unsigned short count = 0;

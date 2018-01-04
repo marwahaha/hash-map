@@ -1,10 +1,13 @@
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "key.h"
 #include "kv.h"
 #include "value.h"
+#include "list.h"
+#include "node.h"
 
 #include "hashmap.h"
 
@@ -61,6 +64,7 @@ kv* create_k1v1() {
 }
 
 void test_internals() {
+    printf("testing internals\n");
     const unsigned short c = 2;
     hashmap* h = hashmap_new_cb(c);
     assert(h != NULL);
@@ -78,6 +82,7 @@ void test_internals() {
 }
 
 void test_simple() {
+    printf("running simple tests\n");
     key* k0 = create_k0();
     kv* k0v0 = create_k0v0();
     kv* k0v0D = create_k0v0();
@@ -96,6 +101,7 @@ void test_simple() {
 }
 
 void test_count() {
+    printf("testing counts\n");
     key* k0 = create_k0();
     key* k1 = create_k1();
     kv* k0v0 = create_k0v0();
@@ -110,20 +116,82 @@ void test_count() {
     assert(_hashmap_count(h) == 1);
     hashmap_del(h, k1);
     assert(_hashmap_count(h) == 0);
+    free(k0);
+    free(k1);
+    free(k0v0);
+    free(k1v1);
+    free(h);
+}
+
+void test_null() {
+}
+
+/*
+    since this hashmap allows the storing of random bytes
+    generate those and go from there.  re-using the list
+    implemented here to store the randomly generated ones
+    so reverification can happen
+
+    since this is developed on mac os x, using arc4random
+    and having a little test to error for adding multi-
+    platform support later if needed
+
+    also, this function uses the internals of the list
+    library (specifically the node struct).  ideally,
+    if the node library is re-factored, adding an
+    iterator for the list would be ideal
+*/
+#ifndef __APPLE__
+#error "fix random support"
+#endif
+void test_many() {
+    printf("testing many kv pairs\n");
+    list* l = list_new();
+    hashmap* h = hashmap_new();
+    kv* c;
+    node* n;
+    for (short kl = 1; kl <= 128; kl += 1) {
+        unsigned char* kb = malloc(sizeof(char)*kl);
+        arc4random_buf(kb, kl);
+        for (short vl = 1; vl <= 1024; vl *= 2) {
+            unsigned char* vb = malloc(sizeof(char)*vl);
+            arc4random_buf(vb, vl);
+            kv* kv = kv_new_raw(kb, kl, vb, vl);
+
+            list_add(l, kv);
+            hashmap_add(h, kv);
+
+            // check that all previous values are present
+            n = l->h;
+            while (n != NULL) {
+                assert(kv_compare(hashmap_get(h, kv_key(n->kv)), n->kv));
+                n = n->n;
+            }
+        }
+    }
+    short t = 0;
+    for (short i = 0; i < h->c; i++) {
+        short c = _list_count(h->b[i]);
+        t += c;
+        printf("  in bucket %hu, there are %hu keys\n", i, c);
+    }
+    printf(" in total, there are %hu keys across %hu buckets\n", t, _DEFAULT_BUCKET_COUNT);
+    test_null();
 }
 
 /*
     FIXME:
-        add functionality to create a bunch of keys
-        and values and then do random deletes and gets
+        do random deletes and gets on many values
         to see if it errors
 
         add keys smartly to test bucket spread (and check)
 */
 
 int main() {
+    printf("testing hashmap.c\n");
     test_internals();
     test_simple();
     test_count();
+    test_many();
     return 0;
 }

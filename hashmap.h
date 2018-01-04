@@ -23,6 +23,10 @@ kv* hashmap_add(hashmap* h, kv* kv);
 kv* hashmap_del(hashmap* h, key* k);
 kv* hashmap_get(hashmap* h, key* k);
 
+// frees hash map and list pointers
+// does not free kv pairs
+void _hashmap_free(hashmap* h);
+
 // for unit test
 unsigned short _hashmap_count(hashmap* h);
 
