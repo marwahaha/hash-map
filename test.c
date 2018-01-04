@@ -185,8 +185,6 @@ void test_many() {
     FIXME:
         do random deletes and gets on many values
         to see if it errors
-
-        add keys smartly to test bucket spread (and check)
 */
 
 int main() {
