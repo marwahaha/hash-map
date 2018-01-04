@@ -41,12 +41,12 @@ void test_new() {
     value* value = value_new(v, l);
     assert(value_l(value) == l);
 
-    unsigned char* vt = value_v(value);
+    unsigned char* vt = value_vb(value);
     char vbt[l];
     memcpy(&vbt, vt, l);
     assert(bcmp(&vbt, &vb, l) == 0);
 
-    free(value->v);
+    free(value->vb);
     free(value);
 }
 
@@ -57,11 +57,11 @@ void test_compare() {
 
     assert(value_compare(v0, v1));
     assert(!value_compare(v1, v2));
-    free(v0->v);
+    free(v0->vb);
     free(v0);
-    free(v1->v);
+    free(v1->vb);
     free(v1);
-    free(v2->v);
+    free(v2->vb);
     free(v2);
 }
 

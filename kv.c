@@ -13,7 +13,6 @@ static void _validate(kv* x) {
     Assert(x != NULL, __func__, "kv cannot be null");
     Assert(x->k != NULL, __func__, "k cannot be null");
     Assert(x->v != NULL, __func__, "v cannot be null");
-    Assert(key_l(x->k) > 0 && value_l(x->v) > 0, __func__, "length must be positive");
 }
 
 // return true if k or v too big, false otherwise

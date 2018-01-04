@@ -43,12 +43,12 @@ void test_new() {
     assert(key_h(key) == 2090069583);
     assert(key_l(key) == l);
 
-    unsigned char* kt = key_k(key);
+    unsigned char* kt = key_kb(key);
     char kbt[l];
     memcpy(&kbt, kt, l);
     assert(bcmp(&kbt, &kb, l) == 0);
 
-    free(key->k);
+    free(key->kb);
     free(key);
 }
 
@@ -59,11 +59,11 @@ void test_compare() {
 
     assert(key_compare(k0, k1));
     assert(!key_compare(k1, k2));
-    free(k0->k);
+    free(k0->kb);
     free(k0);
-    free(k1->k);
+    free(k1->kb);
     free(k1);
-    free(k2->k);
+    free(k2->kb);
     free(k2);
 }
 

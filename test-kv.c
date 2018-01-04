@@ -19,12 +19,12 @@ void test_new() {
 
     kv* x = kv_new_raw(k, k_len, v, v_len);
 
-    unsigned char* kt = key_k(kv_key(x));
+    unsigned char* kt = key_kb(kv_key(x));
     char kbt[k_len];
     memcpy(&kbt, kt, k_len);
     assert(bcmp(&kbt, &kb, k_len) == 0);
 
-    unsigned char* vt = value_v(kv_value(x));
+    unsigned char* vt = value_vb(kv_value(x));
     char vbt[v_len];
     memcpy(&vbt, vt, v_len);
     assert(bcmp(&vbt, &vb, v_len) == 0);
