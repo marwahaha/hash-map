@@ -169,9 +169,9 @@ void test_many() {
             }
         }
     }
-    short t = 0;
-    for (short i = 0; i < h->c; i++) {
-        short c = _list_count(h->b[i]);
+    unsigned short t = 0;
+    for (unsigned short i = 0; i < h->c; i++) {
+        unsigned short c = _list_count(h->b[i]);
         t += c;
         printf("  in bucket %hu, there are %hu keys\n", i, c);
     }
