@@ -59,6 +59,20 @@ kv* create_k1v1() {
     return kv_new(create_k1(), create_v1());
 }
 
+/*
+    test.c takes a dependency on the internals
+    of the node library, so assert on the 
+    dependency
+*/
+void test_internals() {
+    kv* k0v0 = create_k0v0();
+    list* l = list_new();
+    assert(list_add(l, k0v0) == NULL);
+    assert(l->h != NULL);
+    assert(l->h->kv != NULL);
+    assert(kv_compare(k0v0, l->h->kv));
+}
+
 void test_duplicate() {
     kv* k0v0 = create_k0v0();
     kv* k0v0D = create_k0v0();
@@ -118,9 +132,10 @@ void test_get() {
     kv* r = list_get(l, k0);
     assert(r != NULL);
     assert(kv_compare(r, k0v0));
-    r = list_get(l, k0);
+    key* k1 = create_k1();
+    r = list_get(l, k1);
     assert(r != NULL);
-    assert(kv_compare(r, k0v0));
+    assert(kv_compare(r, k1v1));
     free(k0v0);
     free(k1v1);
     free(l);
@@ -147,6 +162,7 @@ int main() {
     list* l = list_new();
     assert(l != NULL);
     assert(l->h == NULL);
+    test_internals();
     test_duplicate();
     test_insert();
     test_delete();
