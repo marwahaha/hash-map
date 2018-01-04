@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
@@ -66,6 +67,7 @@ void test_compare() {
 }
 
 int main() {
+    printf("testing value.c\n");
     test_new();
     test_compare();
     return 0;

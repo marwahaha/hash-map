@@ -4,6 +4,7 @@
 #include "hash.h"
 
 int main() {
+    printf("testing hash.c\n");
     const unsigned int l = 3;
     char c[l] = "abc";
     unsigned char* s = (unsigned char*) &c;

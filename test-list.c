@@ -337,6 +337,7 @@ void test_count() {
 }
 
 int main() {
+    printf("testing list.c\n");
     list* l = list_new();
     assert(l != NULL);
     assert(l->h == NULL);

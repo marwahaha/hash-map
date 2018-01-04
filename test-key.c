@@ -68,6 +68,7 @@ void test_compare() {
 }
 
 int main() {
+    printf("testing key.c\n");
     test_new();
     test_compare();
     return 0;
