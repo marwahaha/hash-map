@@ -9,7 +9,7 @@
 
 static void _length(unsigned short l) {
     Assert(l > 0, __func__, "key length must be > 0");
-    Assert(l <= _MAX_K_LEN, __func__, "key length too large: %hd", l);
+    Assert(l <= _MAX_K_LEN, __func__, "key length too large: %hu", l);
 }
 
 static void _validate(key* key) {
