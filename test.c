@@ -64,7 +64,7 @@ kv* create_k1v1() {
 }
 
 void test_internals() {
-    printf("testing internals\n");
+    printf(" testing internals\n");
     const unsigned short c = 2;
     hashmap* h = hashmap_new_cb(c);
     assert(h != NULL);
@@ -82,7 +82,7 @@ void test_internals() {
 }
 
 void test_simple() {
-    printf("running simple tests\n");
+    printf(" running simple tests\n");
     key* k0 = create_k0();
     kv* k0v0 = create_k0v0();
     kv* k0v0D = create_k0v0();
@@ -101,7 +101,7 @@ void test_simple() {
 }
 
 void test_count() {
-    printf("testing counts\n");
+    printf(" testing counts\n");
     key* k0 = create_k0();
     key* k1 = create_k1();
     kv* k0v0 = create_k0v0();
@@ -123,14 +123,16 @@ void test_count() {
     free(h);
 }
 
-void test_null() {
-}
-
 /*
     since this hashmap allows the storing of random bytes
     generate those and go from there.  re-using the list
     implemented here to store the randomly generated ones
     so reverification can happen
+
+    note that replaces are happening since the key values
+    don't change for a given key length (the comparison
+    will replace since bytes match, it's key-by-value
+    after all)
 
     since this is developed on mac os x, using arc4random
     and having a little test to error for adding multi-
@@ -139,13 +141,14 @@ void test_null() {
     also, this function uses the internals of the list
     library (specifically the node struct).  ideally,
     if the node library is re-factored, adding an
-    iterator for the list would be ideal
+    iterator for the list would be ideal, but there's
+    a test for that just in case.
 */
 #ifndef __APPLE__
 #error "fix random support"
 #endif
 void test_many() {
-    printf("testing many kv pairs\n");
+    printf(" testing many kv pairs\n");
     list* l = list_new();
     hashmap* h = hashmap_new();
     kv* c;
@@ -173,10 +176,9 @@ void test_many() {
     for (unsigned short i = 0; i < h->c; i++) {
         unsigned short c = _list_count(h->b[i]);
         t += c;
-        printf("  in bucket %hu, there are %hu keys\n", i, c);
+        printf("   in bucket %hu, there are %hu keys\n", i, c);
     }
-    printf(" in total, there are %hu keys across %hu buckets\n", t, _DEFAULT_BUCKET_COUNT);
-    test_null();
+    printf("  in total, there are %hu keys across %hu buckets\n", t, _DEFAULT_BUCKET_COUNT);
 }
 
 /*

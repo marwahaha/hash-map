@@ -10,56 +10,56 @@
 
 key* create_k0() {
     const unsigned short l = 4;
-    char kb[l] = "abcd";
-    unsigned char* k = malloc(sizeof(char)*l);
-    memcpy(k, &kb, l);
+    char ka[l] = "abcd";
+    unsigned char* kb = malloc(sizeof(char)*l);
+    memcpy(kb, &ka, l);
 
-    return key_new(k, l);
+    return key_new(kb, l);
 }
 
 key* create_k1() {
     const unsigned short l = 5;
-    char kb[l] = "abcde";
-    unsigned char* k = malloc(sizeof(char)*l);
-    memcpy(k, &kb, l);
+    char ka[l] = "abcde";
+    unsigned char* kb = malloc(sizeof(char)*l);
+    memcpy(kb, &ka, l);
 
-    return key_new(k, l);
+    return key_new(kb, l);
 }
 
 key* create_k2() {
     const unsigned short l = 6;
-    char kb[l] = "abcdef";
-    unsigned char* k = malloc(sizeof(char)*l);
-    memcpy(k, &kb, l);
+    char ka[l] = "abcdef";
+    unsigned char* kb = malloc(sizeof(char)*l);
+    memcpy(kb, &ka, l);
 
-    return key_new(k, l);
+    return key_new(kb, l);
 }
 
 value* create_v0() {
     const unsigned short l = 16;
-    char vb[l] = "abcdefghijklmnop";
-    unsigned char* v = malloc(sizeof(char)*l);
-    memcpy(v, &vb, l);
+    char va[l] = "abcdefghijklmnop";
+    unsigned char* vb = malloc(sizeof(char)*l);
+    memcpy(vb, &va, l);
 
-    return value_new(v, l);
+    return value_new(vb, l);
 }
 
 value* create_v1() {
     const unsigned short l = 17;
-    char vb[l] = "abcdefghijklmnopq";
-    unsigned char* v = malloc(sizeof(char)*l);
-    memcpy(v, &vb, l);
+    char va[l] = "abcdefghijklmnopq";
+    unsigned char* vb = malloc(sizeof(char)*l);
+    memcpy(vb, &va, l);
 
-    return value_new(v, l);
+    return value_new(vb, l);
 }
 
 value* create_v2() {
     const unsigned short l = 18;
-    char vb[l] = "abcdefghijklmnopqr";
-    unsigned char* v = malloc(sizeof(char)*l);
-    memcpy(v, &vb, l);
+    char va[l] = "abcdefghijklmnopqr";
+    unsigned char* vb = malloc(sizeof(char)*l);
+    memcpy(vb, &va, l);
 
-    return value_new(v, l);
+    return value_new(vb, l);
 }
 
 kv* create_k0v0() {
@@ -88,17 +88,19 @@ kv* create_k1v1() {
     dependency
 */
 void test_internals() {
-    printf("testing internals\n");
+    printf(" testing internals\n");
     kv* k0v0 = create_k0v0();
     list* l = list_new();
     assert(list_add(l, k0v0) == NULL);
     assert(l->h != NULL);
     assert(l->h->kv != NULL);
     assert(kv_compare(k0v0, l->h->kv));
+    free(k0v0);
+    free(l);
 }
 
 void test_duplicate() {
-    printf("testing duplicates\n");
+    printf(" testing duplicates\n");
     kv* k0v0 = create_k0v0();
     kv* k0v0D = create_k0v0();
     list* l = list_new();
@@ -107,14 +109,13 @@ void test_duplicate() {
     assert(kv_compare(k0v0, r));
     assert(key_compare(kv_key(k0v0), kv_key(r)));
     assert(value_compare(kv_value(k0v0), kv_value(r)));
-    // best-effort
     free(k0v0);
     free(k0v0D);
     free(l);
 }
 
 void test_insert() {
-    printf("testing insert\n");
+    printf(" testing insert\n");
     kv* k0v0 = create_k0v0();
     kv* k0v1 = create_k0v1();
     list* l = list_new();
@@ -126,13 +127,12 @@ void test_insert() {
     kv* k1v1 = create_k1v1();
     assert(list_add(l, k1v1) == NULL);
     free(k0v0);
-    free(k0v1);
     free(k1v1);
     free(l);
 }
 
 void test_get() {
-    printf("testing get\n");
+    printf(" testing get\n");
     kv* k0v0 = create_k0v0();
     list* l = list_new();
     assert(list_add(l, k0v0) == NULL);
@@ -158,6 +158,9 @@ void test_get() {
     assert(r != NULL);
     assert(kv_compare(r, k2v2));
 
+    free(k0);
+    free(k1);
+    free(k2);
     free(k0v0);
     free(k1v1);
     free(k2v2);
@@ -165,7 +168,7 @@ void test_get() {
 }
 
 void test_del_1n_head() {
-    printf("testing one node head delete\n");
+    printf(" testing one node head delete\n");
     kv* k0v0 = create_k0v0();
     list* l = list_new();
     assert(list_add(l, k0v0) == NULL);
@@ -175,6 +178,7 @@ void test_del_1n_head() {
     assert(kv_compare(r, k0v0));
     assert(l->h == NULL);
     free(k0);
+    free(k0v0);
     free(l);
 }
 
@@ -199,7 +203,7 @@ list* twoN_list() {
 }
 
 void test_del_twoN_head() {
-    printf("testing two node head delete\n");
+    printf(" testing two node head delete\n");
     list* l = twoN_list();
     key* k0 = create_k0();
     kv* r = list_del(l, k0);
@@ -210,11 +214,13 @@ void test_del_twoN_head() {
     assert(kv_compare(l->h->kv, k1v1));
     assert(l->h->n == NULL);
     free(k0);
+    free(k1v1);
+    free(k0v0);
     free(l);
 }
 
 void test_del_twoN_tail() {
-    printf("testing two node tail delete\n");
+    printf(" testing two node tail delete\n");
     list* l = twoN_list();
     key* k1 = create_k1();
     kv* r = list_del(l, k1);
@@ -225,6 +231,8 @@ void test_del_twoN_tail() {
     assert(kv_compare(l->h->kv, k0v0));
     assert(l->h->n == NULL);
     free(k1);
+    free(k1v1);
+    free(k0v0);
     free(l);
 }
 
@@ -256,7 +264,7 @@ list* threeN_list() {
 }
 
 void test_del_threeN_head() {
-    printf("testing three node head delete\n");
+    printf(" testing three node head delete\n");
     list* l = threeN_list();
     key* k0 = create_k0();
     kv* r = list_del(l, k0);
@@ -269,11 +277,14 @@ void test_del_threeN_head() {
     assert(kv_compare(l->h->n->kv, k2v2));
     assert(l->h->n->n == NULL);
     free(k0);
+    free(k2v2);
+    free(k1v1);
+    free(k0v0);
     free(l);
 }
 
 void test_del_threeN_mid() {
-    printf("testing three node mid delete\n");
+    printf(" testing three node mid delete\n");
     list* l = threeN_list();
     key* k1 = create_k1();
     kv* r = list_del(l, k1);
@@ -286,11 +297,14 @@ void test_del_threeN_mid() {
     assert(kv_compare(l->h->n->kv, k2v2));
     assert(l->h->n->n == NULL);
     free(k1);
+    free(k2v2);
+    free(k1v1);
+    free(k0v0);
     free(l);
 }
 
 void test_del_threeN_tail() {
-    printf("testing three node tail delete\n");
+    printf(" testing three node tail delete\n");
     list* l = threeN_list();
     key* k2 = create_k2();
     kv* r = list_del(l, k2);
@@ -303,11 +317,14 @@ void test_del_threeN_tail() {
     assert(kv_compare(l->h->n->kv, k1v1));
     assert(l->h->n->n == NULL);
     free(k2);
+    free(k2v2);
+    free(k1v1);
+    free(k0v0);
     free(l);
 }
 
 void test_delete() {
-    printf("testing deletes\n");
+    printf(" testing deletes\n");
     test_del_1n_head();
 
     test_del_twoN_head();
@@ -319,7 +336,7 @@ void test_delete() {
 }
 
 void test_count() {
-    printf("testing count\n");
+    printf(" testing count\n");
     kv* k0v0 = create_k0v0();
     kv* k0v1 = create_k0v1();
     kv* k1v1 = create_k1v1();

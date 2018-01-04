@@ -16,9 +16,9 @@ static void _validate(kv* x) {
 }
 
 // return true if k or v too big, false otherwise
-static bool _validate_max(const unsigned short k_len, const unsigned short v_len) {
-    Assert(k_len > 0 && v_len > 0, __func__, "length must be positive");
-    if (k_len > _MAX_K_LEN || v_len > _MAX_V_LEN) return true;
+static bool _validate_max(const unsigned short kl, const unsigned short vl) {
+    Assert(kl > 0 && vl > 0, __func__, "length must be positive");
+    if (kl > _MAX_K_LEN || vl > _MAX_V_LEN) return true;
     return false;
 }
 
@@ -44,10 +44,10 @@ kv* kv_new(key* k, value* v) {
     return x;
 }
 
-kv* kv_new_raw(unsigned char* kb, unsigned short k_len, unsigned char* vb, unsigned short v_len) {
+kv* kv_new_raw(unsigned char* kb, unsigned short kl, unsigned char* vb, unsigned short vl) {
     Assert(kb != NULL && vb != NULL, __func__, "key and value must be passed");
-    key* k = key_new(kb, k_len);
-    value* v = value_new(vb, v_len);
+    key* k = key_new(kb, kl);
+    value* v = value_new(vb, vl);
     return kv_new(k, v);
 }
 

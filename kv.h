@@ -18,7 +18,7 @@ struct kv {
     note that caller must validate k and v pointers are malloc()'d
 */
 kv* kv_new(key* k, value* v);
-kv* kv_new_raw(unsigned char* kb, unsigned short k_len, unsigned char* vb, unsigned short v_len);
+kv* kv_new_raw(unsigned char* kb, unsigned short kl, unsigned char* vb, unsigned short vl);
 
 /*
     compare two kv (by value)
