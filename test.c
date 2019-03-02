@@ -1,7 +1,8 @@
 #include <assert.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+
+#include <bsd/stdlib.h>
 
 #include "key.h"
 #include "kv.h"
@@ -144,9 +145,6 @@ void test_count() {
     iterator for the list would be ideal, but there's
     a test for that just in case.
 */
-#ifndef __APPLE__
-#error "fix random support"
-#endif
 void test_many() {
     printf(" testing many kv pairs\n");
     list* l = list_new();

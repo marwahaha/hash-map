@@ -23,7 +23,7 @@ hashmap* hashmap_new_cb(unsigned short count) {
     return h;
 }
 
-static void _validate(hashmap* h) {
+static inline void _validate(hashmap* h) {
     Assert(h != NULL, __func__, "hashmap cannot be null");
     Assert(h->c > 0, __func__, "problem with c");
     Assert(h->b != NULL, __func__, "problem with b");
