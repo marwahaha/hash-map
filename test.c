@@ -179,12 +179,6 @@ void test_many() {
     printf("  in total, there are %hu keys across %hu buckets\n", t, _DEFAULT_BUCKET_COUNT);
 }
 
-/*
-    FIXME:
-        do random deletes and gets on many values
-        to see if it errors
-*/
-
 int main() {
     printf("testing hashmap.c\n");
     test_internals();
